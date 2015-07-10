@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Clicker</string>
+    <string name="action_decrement">Decrement</string>
+    <string name="increment">Increment</string>
+    <string name="default_zero">0</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_settings">Settings</string>
+    <string name="radio_simple_count">Simple Count</string>
+</resources>
