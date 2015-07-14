@@ -23,4 +23,8 @@
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 
+    <CheckBoxPreference android:key="@string/fs_button_checkbox"
+        android:title="@string/pref_title_fs_button"
+        android:defaultValue="false" />
+
 </PreferenceScreen>

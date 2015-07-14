@@ -5,33 +5,40 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
-
+    public static MainActivityFragment INSTANCE;
     public static final String PREFS_NAME = "CountAppFile";
     public Integer count = 0;
     public View rootView;
     public Integer simple = 0;
     public Integer multiple = 1;
+    private boolean fsButton;
 
     public MainActivityFragment() {
 
     }
 
-    private void updateTextViews() {
+    public static MainActivityFragment getInstance() {
+        return INSTANCE;
+    }
+
+    void updateTextViews() {
         Integer mCount = count / multiple; // multiple count
         Integer rCount = count % multiple; // remainder count
-        if (simple == 1){
+        if (simple == 1) {
             final View textViewCount = rootView.findViewById(R.id.textView_count);
             ((TextView) textViewCount).setText(count.toString());
         } else {
@@ -44,7 +51,10 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        INSTANCE = this;
         super.onCreate(savedInstanceState);
+        SharedPreferences savedCount = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        count = savedCount.getInt("count", 0);
         setHasOptionsMenu(true);
     }
 
@@ -69,17 +79,37 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void restoreSavedState() {
-        SharedPreferences savedCount = getActivity().getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        this.count = savedCount.getInt("count", 0);
-        this.simple = Integer.parseInt(sharedPref.getString("mode_list", "1").trim());
-        this.multiple = Integer.parseInt(sharedPref.getString("multiple_number", "1").trim());
+        try {
+            this.simple = Integer.parseInt(sharedPref.getString("mode_list", "1").trim());
+            this.multiple = Integer.parseInt(sharedPref.getString("multiple_number", "1").trim());
+            this.fsButton = sharedPref.getBoolean("fs_button_checkbox", false);
+        } catch (Throwable t) {
+            this.simple = 1;
+            this.multiple = 1;
+            this.fsButton = false;
+        }
         if (simple == 1) {
             final View textViewMCount = rootView.findViewById(R.id.textView_mcount);
             textViewMCount.setVisibility(View.INVISIBLE);
         } else {
             final View textViewMCount = rootView.findViewById(R.id.textView_mcount);
             textViewMCount.setVisibility(View.VISIBLE);
+        }
+        if (fsButton) {
+            final RelativeLayout parentView =
+                    (RelativeLayout) rootView.findViewById(R.id.parent_layout_panel);
+            parentView.setClickable(true);
+            final View buttonI = rootView.findViewById(R.id.button_i);
+            buttonI.setClickable(false);
+            buttonI.setVisibility(View.GONE);
+        } else {
+            final RelativeLayout parentView =
+                    (RelativeLayout) rootView.findViewById(R.id.parent_layout_panel);
+            parentView.setClickable(false);
+            final View buttonI = rootView.findViewById(R.id.button_i);
+            buttonI.setClickable(true);
+            buttonI.setVisibility(View.VISIBLE);
         }
     }
 
@@ -90,16 +120,13 @@ public class MainActivityFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_reset) {
-            count = 0;
-            updateTextViews();
-            return true;
-        } else if (id == R.id.action_decrement) {
-            if (count > 0) count--;
-            updateTextViews();
+            final Intent resetIntent = new Intent(getActivity(), ResetActivity.class);
+            startActivity(resetIntent);
             return true;
         } else if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
             startActivity(settingsIntent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -110,6 +137,14 @@ public class MainActivityFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final View buttonI = rootView.findViewById(R.id.button_i);
         buttonI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count++;
+                updateTextViews();
+            }
+        });
+        final View parentView = rootView.findViewById(R.id.parent_layout_panel);
+        parentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 count++;

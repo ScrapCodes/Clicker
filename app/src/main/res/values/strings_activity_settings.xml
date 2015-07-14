@@ -5,16 +5,18 @@
     <string name="pref_header_general">General</string>
 
     <string name="pref_title_count_multiples">Count in Multiples of.</string>
-    <string name="pref_default_count_multiple">1</string>
+    <string name="pref_default_count_multiple" translatable="false" >1</string>
 
     <string name="pref_title_select_mode">Select count Mode</string>
     <string-array name="pref_select_mode_titles">
         <item>Simple</item>
         <item>Advanced</item>
     </string-array>
-    <string-array name="pref_select_mode_values">
+    <string-array name="pref_select_mode_values" translatable="false" >
         <item>1</item>
         <item>0</item>
     </string-array>
+
+    <string name="pref_title_fs_button">Touch to count mode.</string>
 
 </resources>
