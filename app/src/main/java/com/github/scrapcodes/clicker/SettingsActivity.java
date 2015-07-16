@@ -107,6 +107,7 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("multiple_number"));
         bindPreferenceSummaryToValue(findPreference("mode_list"));
         bindPreferenceSummaryToValue(findPreference("fs_button_checkbox"));
+        bindPreferenceSummaryToValue(findPreference("vibrate_mode"));
     }
 
     /**
@@ -198,7 +199,8 @@ public class SettingsActivity extends PreferenceActivity {
         // current value.
         final SharedPreferences defaultSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(preference.getContext());
-        if (preference.getKey().equals("fs_button_checkbox")) {
+        if (preference.getKey().equals("fs_button_checkbox") ||
+                preference.getKey().equals("vibrate_mode")) {
             sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                     defaultSharedPreferences.getBoolean(preference.getKey(), false));
         } else {
@@ -225,6 +227,7 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("multiple_number"));
             bindPreferenceSummaryToValue(findPreference("mode_list"));
             bindPreferenceSummaryToValue(findPreference("fs_button_checkbox"));
+            bindPreferenceSummaryToValue(findPreference("vibrate_mode"));
         }
     }
 }

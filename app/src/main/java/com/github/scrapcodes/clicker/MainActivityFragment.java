@@ -1,7 +1,10 @@
 package com.github.scrapcodes.clicker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ public class MainActivityFragment extends Fragment {
     public Integer simple = 0;
     public Integer multiple = 1;
     private boolean fsButton;
+    private boolean vibrate;
 
     public MainActivityFragment() {
 
@@ -38,6 +42,10 @@ public class MainActivityFragment extends Fragment {
     void updateTextViews() {
         Integer mCount = count / multiple; // multiple count
         Integer rCount = count % multiple; // remainder count
+        if (rCount == 0 && mCount > 0 && vibrate) {
+            Vibrator v = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(300); // 300 milli seconds
+        }
         if (simple == 1) {
             final View textViewCount = rootView.findViewById(R.id.textView_count);
             ((TextView) textViewCount).setText(count.toString());
@@ -84,6 +92,7 @@ public class MainActivityFragment extends Fragment {
             this.simple = Integer.parseInt(sharedPref.getString("mode_list", "1").trim());
             this.multiple = Integer.parseInt(sharedPref.getString("multiple_number", "1").trim());
             this.fsButton = sharedPref.getBoolean("fs_button_checkbox", false);
+            this.vibrate = sharedPref.getBoolean("vibrate_mode", false);
         } catch (Throwable t) {
             this.simple = 1;
             this.multiple = 1;

@@ -27,4 +27,8 @@
         android:title="@string/pref_title_fs_button"
         android:defaultValue="false" />
 
+    <CheckBoxPreference android:key="vibrate_mode"
+        android:title="Vibrate on each multiple."
+        android:defaultValue="false" />
+
 </PreferenceScreen>
