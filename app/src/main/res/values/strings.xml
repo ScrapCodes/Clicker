@@ -10,4 +10,6 @@
     <string name="title_activity_reset">ResetActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="textview_reset_count">Reset count to:</string>
+    <string name="checkbox_settings_vibrate_title">Vibrate on each multiple.</string>
+    <string name="checkbox_settings_theme_title">Invert color theme.</string>
 </resources>

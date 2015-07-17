@@ -108,6 +108,7 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("mode_list"));
         bindPreferenceSummaryToValue(findPreference("fs_button_checkbox"));
         bindPreferenceSummaryToValue(findPreference("vibrate_mode"));
+        bindPreferenceSummaryToValue(findPreference("invert_color"));
     }
 
     /**
@@ -200,7 +201,8 @@ public class SettingsActivity extends PreferenceActivity {
         final SharedPreferences defaultSharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(preference.getContext());
         if (preference.getKey().equals("fs_button_checkbox") ||
-                preference.getKey().equals("vibrate_mode")) {
+                preference.getKey().equals("vibrate_mode") ||
+                preference.getKey().equals("invert_color")) {
             sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
                     defaultSharedPreferences.getBoolean(preference.getKey(), false));
         } else {
@@ -228,6 +230,7 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("mode_list"));
             bindPreferenceSummaryToValue(findPreference("fs_button_checkbox"));
             bindPreferenceSummaryToValue(findPreference("vibrate_mode"));
+            bindPreferenceSummaryToValue(findPreference("invert_color"));
         }
     }
 }

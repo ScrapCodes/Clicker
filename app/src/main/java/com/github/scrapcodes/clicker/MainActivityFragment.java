@@ -30,6 +30,8 @@ public class MainActivityFragment extends Fragment {
     public Integer multiple = 1;
     private boolean fsButton;
     private boolean vibrate;
+    private boolean invertColor;
+    private RelativeLayout parentView;
 
     public MainActivityFragment() {
 
@@ -49,11 +51,27 @@ public class MainActivityFragment extends Fragment {
         if (simple == 1) {
             final View textViewCount = rootView.findViewById(R.id.textView_count);
             ((TextView) textViewCount).setText(count.toString());
+            if (invertColor) {
+                parentView.setBackgroundColor(Color.BLACK);
+                ((TextView) textViewCount).setTextColor(Color.LTGRAY);
+            } else {
+                parentView.setBackgroundColor(Color.WHITE);
+                ((TextView) textViewCount).setTextColor(Color.BLACK);
+            }
         } else {
             final View textViewCount = rootView.findViewById(R.id.textView_count);
             ((TextView) textViewCount).setText(rCount.toString());
             final View textViewMCount = rootView.findViewById(R.id.textView_mcount);
             ((TextView) textViewMCount).setText(mCount.toString());
+            if (invertColor) {
+                parentView.setBackgroundColor(Color.BLACK);
+                ((TextView) textViewCount).setTextColor(Color.LTGRAY);
+                ((TextView) textViewMCount).setTextColor(Color.LTGRAY);
+            } else {
+                parentView.setBackgroundColor(Color.WHITE);
+                ((TextView) textViewCount).setTextColor(Color.BLACK);
+                ((TextView) textViewMCount).setTextColor(Color.BLACK);
+            }
         }
     }
 
@@ -93,10 +111,13 @@ public class MainActivityFragment extends Fragment {
             this.multiple = Integer.parseInt(sharedPref.getString("multiple_number", "1").trim());
             this.fsButton = sharedPref.getBoolean("fs_button_checkbox", false);
             this.vibrate = sharedPref.getBoolean("vibrate_mode", false);
+            this.invertColor = sharedPref.getBoolean("invert_color", false);
         } catch (Throwable t) {
             this.simple = 1;
             this.multiple = 1;
             this.fsButton = false;
+            this.vibrate = false;
+            this.invertColor = false;
         }
         if (simple == 1) {
             final View textViewMCount = rootView.findViewById(R.id.textView_mcount);
@@ -106,15 +127,11 @@ public class MainActivityFragment extends Fragment {
             textViewMCount.setVisibility(View.VISIBLE);
         }
         if (fsButton) {
-            final RelativeLayout parentView =
-                    (RelativeLayout) rootView.findViewById(R.id.parent_layout_panel);
             parentView.setClickable(true);
             final View buttonI = rootView.findViewById(R.id.button_i);
             buttonI.setClickable(false);
             buttonI.setVisibility(View.GONE);
         } else {
-            final RelativeLayout parentView =
-                    (RelativeLayout) rootView.findViewById(R.id.parent_layout_panel);
             parentView.setClickable(false);
             final View buttonI = rootView.findViewById(R.id.button_i);
             buttonI.setClickable(true);
@@ -152,7 +169,7 @@ public class MainActivityFragment extends Fragment {
                 updateTextViews();
             }
         });
-        final View parentView = rootView.findViewById(R.id.parent_layout_panel);
+        parentView = (RelativeLayout) rootView.findViewById(R.id.parent_layout_panel);
         parentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

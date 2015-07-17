@@ -28,7 +28,11 @@
         android:defaultValue="false" />
 
     <CheckBoxPreference android:key="vibrate_mode"
-        android:title="Vibrate on each multiple."
+        android:title="@string/checkbox_settings_vibrate_title"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference android:key="invert_color"
+        android:title="@string/checkbox_settings_theme_title"
         android:defaultValue="false" />
 
 </PreferenceScreen>
