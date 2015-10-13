@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 
 
 /**
@@ -24,6 +25,39 @@ public class ResetActivityFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_reset, container, false);
         final EditText editText = (EditText) rootView.findViewById(R.id.editText_reset_count);
+        final NumberPicker numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(100);
+        final String string = editText.getText().toString().trim();
+        if (!string.isEmpty() && string.length() < 9) {
+            Integer count =
+                    Integer.parseInt(string);
+            numberPicker.setValue(count % MainActivityFragment.getInstance().multiple);
+        }
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if (newVal > oldVal) {
+                    final String string = editText.getText().toString().trim();
+                    if (!string.isEmpty() && string.length() < 9) {
+                        Integer count =
+                                Integer.parseInt(string);
+                        final int newCount = count + (newVal - oldVal) * MainActivityFragment.getInstance().multiple;
+                        if (newCount >= 0 && newCount < 999999999)
+                            editText.setText(String.format("%d", newCount));
+                    }
+                } else {
+                    final String string = editText.getText().toString().trim();
+                    if (!string.isEmpty() && string.length() < 9) {
+                        Integer count =
+                                Integer.parseInt(string);
+                        final int newCount = count - (oldVal - newVal) * MainActivityFragment.getInstance().multiple;
+                        if (newCount >= 0 && newCount < 999999999)
+                            editText.setText(String.format("%d", newCount));
+                    }
+                }
+            }
+        });
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
